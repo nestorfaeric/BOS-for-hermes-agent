@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOS — Business Operating System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  .hero {
+    text-align: center;
+    padding: 80px 20px 40px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #fff 0%, #818cf8 50%, #6366f1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+
+  .hero .subtitle {
+    font-size: 1.35rem;
+    color: #9ca3af;
+    font-weight: 400;
+    max-width: 600px;
+    margin: 0 auto 12px;
+    line-height: 1.5;
+  }
+
+  .hero .tagline {
+    font-size: 1rem;
+    color: #6366f1;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Stats bar */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 32px 20px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat .number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #818cf8;
+  }
+
+  .stat .label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Section */
+  .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 48px;
+    font-size: 1.05rem;
+  }
+
+  /* 3 Phases */
+  .phases {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .phase-card {
+    background: linear-gradient(145deg, #13131a 0%, #1a1a2e 100%);
+    border: 1px solid #1e1e3a;
+    border-radius: 20px;
+    padding: 32px 28px;
+    width: 340px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .phase-card:hover {
+    transform: translateY(-4px);
+    border-color: #6366f1;
+  }
+
+  .phase-card .phase-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .phase-card:nth-child(1) .phase-number { color: #f59e0b; }
+  .phase-card:nth-child(2) .phase-number { color: #3b82f6; }
+  .phase-card:nth-child(3) .phase-number { color: #10b981; }
+
+  .phase-card h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .phase-card .phase-desc {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .phase-card .skills-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .phase-card .skills-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #d1d5db;
+  }
+
+  .skill-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .phase-card:nth-child(1) .skill-dot { background: #f59e0b; }
+  .phase-card:nth-child(2) .skill-dot { background: #3b82f6; }
+  .phase-card:nth-child(3) .skill-dot { background: #10b981; }
+
+  /* Arrows between phases */
+  .phase-arrows {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+
+  .arrow-line {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, #6366f1, transparent);
+  }
+
+  .arrow-label {
+    background: #6366f1;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* Cross-cutting skills */
+  .cross-cutting {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  .cross-skill {
+    background: linear-gradient(145deg, #1a1525 0%, #201a30 100%);
+    border: 1px solid #2d2345;
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+    transition: transform 0.3s, border-color 0.3s;
+    min-width: 160px;
+  }
+
+  .cross-skill:hover {
+    transform: translateY(-2px);
+    border-color: #8b5cf6;
+  }
+
+  .cross-skill .cross-icon {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .cross-skill .cross-name {
+    font-weight: 700;
+    color: #c4b5fd;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .cross-skill .cross-desc {
+    font-size: 0.75rem;
+    color: #7c6f9f;
+  }
+
+  .cross-label {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #8b5cf6;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+
+  /* Core files */
+  .core-section {
+    margin-top: 80px;
+  }
+
+  .core-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .core-file {
+    background: #111118;
+    border: 1px solid #1e1e2e;
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .core-file:hover {
+    transform: translateY(-3px);
+    border-color: #4f46e5;
+  }
+
+  .core-file .file-icon {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+
+  .core-file .file-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    margin-bottom: 4px;
+  }
+
+  .core-file .file-desc {
+    font-size: 0.75rem;
+    color: #6b7280;
+    line-height: 1.4;
+  }
+
+  /* How it works */
+  .how-section {
+    margin-top: 80px;
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .flow-steps::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 28px;
+    bottom: 28px;
+    width: 2px;
+    background: linear-gradient(180deg, #6366f1, #8b5cf6, #a78bfa);
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px 0;
+    position: relative;
+  }
+
+  .flow-step .step-num {
+    width: 56px; height: 56px;
+    background: #13131a;
+    border: 2px solid #6366f1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #818cf8;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .flow-step .step-content h4 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .flow-step .step-content p {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    line-height: 1.5;
+  }
+
+  .bos-badge {
+    display: inline-block;
+    background: rgba(99,102,241,0.15);
+    color: #818cf8;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* AI Advantage section */
+  .ai-section {
+    margin-top: 80px;
+    text-align: center;
+  }
+
+  .ai-comparison {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  .ai-col {
+    width: 320px;
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: left;
+  }
+
+  .ai-col.without {
+    background: #14141c;
+    border: 1px solid #1e1e2e;
+  }
+
+  .ai-col.with {
+    background: linear-gradient(145deg, #13132a 0%, #1a1540 100%);
+    border: 1px solid #3730a3;
+  }
+
+  .ai-col h4 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+
+  .ai-col.without h4 { color: #6b7280; }
+  .ai-col.with h4 { color: #818cf8; }
+
+  .ai-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-col li {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ai-col.without li { color: #6b7280; }
+  .ai-col.with li { color: #c4b5fd; }
+
+  .ai-col li .icon {
+    flex-shrink: 0;
+    font-size: 1rem;
+    margin-top: 1px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 60px 20px 40px;
+    color: #4b5563;
+    font-size: 0.85rem;
+  }
+
+  .footer a {
+    color: #6366f1;
+    text-decoration: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2.5rem; }
+    .phases { flex-direction: column; align-items: center; }
+    .phase-card { width: 100%; max-width: 400px; }
+    .stats { gap: 24px; }
+    .stat .number { font-size: 1.8rem; }
+    .ai-comparison { flex-direction: column; align-items: center; }
+    .ai-col { width: 100%; max-width: 400px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="tagline">Business Operating System</div>
+  <h1>BOS</h1>
+  <p class="subtitle">Transforme Claude en associé business IA. De l'idée au scale, BOS diagnostique, planifie, et exécute — pendant que tu décides.</p>
+</div>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat">
+    <div class="number">10</div>
+    <div class="label">Skills spécialisés</div>
+  </div>
+  <div class="stat">
+    <div class="number">3</div>
+    <div class="label">Phases de croissance</div>
+  </div>
+  <div class="stat">
+    <div class="number">6</div>
+    <div class="label">Fichiers de contexte</div>
+  </div>
+  <div class="stat">
+    <div class="number">~70%</div>
+    <div class="label">Du travail fait par BOS</div>
+  </div>
+</div>
+
+<!-- 3 Phases -->
+<div class="section">
+  <h2 class="section-title">Les 3 Phases</h2>
+  <p class="section-subtitle">BOS détecte automatiquement ta phase et active les bons skills</p>
+
+  <div class="phases">
+    <div class="phase-card">
+      <div class="phase-number">Phase 1</div>
+      <h3>Find</h3>
+      <p class="phase-desc">Pas de business ou doute sur l'idée actuelle. BOS aide à choisir, valider, et s'engager.</p>
+      <ul class="skills-list">
+        <li><span class="skill-dot"></span>Analyse de profil + unfair advantages</li>
+        <li><span class="skill-dot"></span>3 idées scorées (2 AI-leveraged)</li>
+        <li><span class="skill-dot"></span>Modèle à reproduire + Business Card</li>
+        <li><span class="skill-dot"></span>Engagement 6 mois</li>
+      </ul>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-number">Phase 2</div>
+      <h3>PMF</h3>
+      <p class="phase-desc">Business lancé, pas de revenue consistant. BOS trouve le product-market fit.</p>
+      <ul class="skills-list">
+        <li><span class="skill-dot"></span><strong>Traffic</strong> — Choix du canal + mise en place</li>
+        <li><span class="skill-dot"></span><strong>Offer</strong> — Customer research + Design d'offre</li>
+        <li><span class="skill-dot"></span><strong>Funnel</strong> — Mapping + optimisation conversion</li>
+      </ul>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-number">Phase 3</div>
+      <h3>Scale</h3>
+      <p class="phase-desc">PMF prouvé, prêt à croître. BOS identifie le goulot et pousse la croissance.</p>
+      <ul class="skills-list">
+        <li><span class="skill-dot"></span><strong>Chase</strong> — Nouveaux leviers de revenue</li>
+        <li><span class="skill-dot"></span><strong>Digestion</strong> — Ops, qualité, rétention, équipe</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Cross-cutting -->
+  <div class="cross-label">Skills disponibles dans toutes les phases</div>
+  <div class="cross-cutting">
+    <div class="cross-skill">
+      <div class="cross-icon">🧭</div>
+      <div class="cross-name">Diagnosis</div>
+      <div class="cross-desc">Identifie la phase + le goulot</div>
+    </div>
+    <div class="cross-skill">
+      <div class="cross-icon">📋</div>
+      <div class="cross-name">Organize</div>
+      <div class="cross-desc">Plan d'action + répartition BOS/toi</div>
+    </div>
+    <div class="cross-skill">
+      <div class="cross-icon">🧠</div>
+      <div class="cross-name">Mindset</div>
+      <div class="cross-desc">Quand le blocage, c'est toi</div>
+    </div>
+    <div class="cross-skill">
+      <div class="cross-icon">👋</div>
+      <div class="cross-name">Onboard</div>
+      <div class="cross-desc">Premier setup en 15 min</div>
+    </div>
+  </div>
+</div>
+
+<!-- Core Files -->
+<div class="section core-section">
+  <h2 class="section-title">La mémoire de BOS</h2>
+  <p class="section-subtitle">6 fichiers qui évoluent avec ton business — BOS se souvient de tout</p>
+
+  <div class="core-grid">
+    <div class="core-file">
+      <div class="file-icon">👤</div>
+      <div class="file-name">Profile.md</div>
+      <div class="file-desc">Toi : skills, temps, forces, motivation</div>
+    </div>
+    <div class="core-file">
+      <div class="file-icon">🏢</div>
+      <div class="file-name">Business.md</div>
+      <div class="file-desc">Ton business : offre, clients, chiffres</div>
+    </div>
+    <div class="core-file">
+      <div class="file-icon">🎯</div>
+      <div class="file-name">Goal.md</div>
+      <div class="file-desc">Objectif revenue + timeline + pourquoi</div>
+    </div>
+    <div class="core-file">
+      <div class="file-icon">🔍</div>
+      <div class="file-name">Diagnosis.md</div>
+      <div class="file-desc">Problème #1 + tous les blocages classés</div>
+    </div>
+    <div class="core-file">
+      <div class="file-icon">✅</div>
+      <div class="file-name">Actions.md</div>
+      <div class="file-desc">Plan d'action en cours + historique</div>
+    </div>
+    <div class="core-file">
+      <div class="file-icon">📓</div>
+      <div class="file-name">Journal.md</div>
+      <div class="file-desc">Log quotidien : progrès et décisions</div>
+    </div>
+  </div>
+</div>
+
+<!-- How it works -->
+<div class="section how-section">
+  <h2 class="section-title">Comment ça marche</h2>
+  <p class="section-subtitle">Tu parles, BOS prend les rênes</p>
+
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Tu dis "Salut" <span class="bos-badge">15 sec</span></h4>
+        <p>BOS se présente et commence à te poser des questions sur toi et ton projet. Pas de formulaire — une conversation naturelle.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>BOS construit ton profil <span class="bos-badge">BOS fait</span></h4>
+        <p>En 3-4 échanges, BOS comprend ton background, tes forces, tes contraintes, et remplit tous les fichiers automatiquement.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Diagnostic instantané <span class="bos-badge">BOS fait</span></h4>
+        <p>BOS identifie ta phase (Find / PMF / Scale), trouve TON goulot #1, et classe tes problèmes par impact.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Plan d'action avec répartition <span class="bos-badge">BOS fait 70%</span></h4>
+        <p>BOS crée un plan en 3-5 étapes et montre ce qu'il fait à ta place : recherche, rédaction, analyse, prospection...</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Exécution immédiate <span class="bos-badge">Maintenant</span></h4>
+        <p>Pas de "à demain". BOS commence la première action dans la conversation : écrit l'offre, rédige les messages, crée la liste de prospects.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <h4>Tu reviens, BOS se souvient <span class="bos-badge">Continu</span></h4>
+        <p>Tous les 3 jours, BOS fait le point : ce qui a été fait, les résultats, les problèmes. Nouveau plan. Et on continue.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI Advantage -->
+<div class="section ai-section">
+  <h2 class="section-title">L'avantage IA</h2>
+  <p class="section-subtitle">Ce que BOS change concrètement</p>
+
+  <div class="ai-comparison">
+    <div class="ai-col without">
+      <h4>Sans BOS</h4>
+      <ul>
+        <li><span class="icon">⏱</span>3 semaines pour choisir une idée de business</li>
+        <li><span class="icon">⏱</span>2 semaines pour créer une offre</li>
+        <li><span class="icon">⏱</span>1 semaine pour écrire les messages de prospection</li>
+        <li><span class="icon">⏱</span>Des heures à chercher des infos sur YouTube</li>
+        <li><span class="icon">⏱</span>Aucun suivi structuré de tes actions</li>
+        <li><span class="icon">⏱</span>Personne pour te dire quand tu te trompes</li>
+      </ul>
+    </div>
+    <div class="ai-col with">
+      <h4>Avec BOS</h4>
+      <ul>
+        <li><span class="icon">⚡</span>Idée choisie et scorée en 1 session</li>
+        <li><span class="icon">⚡</span>Offre structurée en 30 minutes</li>
+        <li><span class="icon">⚡</span>Messages de prospection écrits instantanément</li>
+        <li><span class="icon">⚡</span>BOS enseigne en construisant avec toi</li>
+        <li><span class="icon">⚡</span>Plan d'action rafraîchi tous les 3 jours</li>
+        <li><span class="icon">⚡</span>Un COO qui connaît ton business et te challenge</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>BOS — Business Operating System par <a href="https://youtube.com/@YomiDenzel">Yomi Denzel</a></p>
+  <p style="margin-top: 8px;">Open source (MIT) — Fonctionne avec Claude Desktop, Cursor, ou Claude Code</p>
+</div>
+
+</body>
+</html>
