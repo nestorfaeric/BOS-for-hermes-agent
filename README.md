@@ -68,8 +68,10 @@ hermes --profile bos gateway start
 - `workspace/BOS/Output/` reçoit les livrables datés.
 - Les skills `bos-*` routent l'action : onboarding, diagnostic, offre, trafic, funnel, mindset, scale, opérations.
 
-## Crédit
+## Crédit et remerciements
 
-Fork/adaptation de BOS par Yomi Denzel : https://github.com/yomidenzel/BOS
+Ce projet est un fork/adaptation de BOS par Yomi Denzel : https://github.com/yomidenzel/BOS
+
+Merci à [Yomi Denzel](https://youtube.com/@YomiDenzel) pour la mise à disposition de cette structure BOS, qui sert ici de base à une adaptation pour Hermes Agent.
 
 Licence originale : MIT.
