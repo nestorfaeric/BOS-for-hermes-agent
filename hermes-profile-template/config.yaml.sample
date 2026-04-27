@@ -1,0 +1,15 @@
+# Exemple de configuration pour un profil Hermes BOS.
+# À copier/adapter dans ~/.hermes/profiles/bos/config.yaml après `hermes profile create bos`.
+model:
+  provider: openai-codex
+  default: gpt-5.5
+terminal:
+  backend: local
+  cwd: workspace/BOS
+agent:
+  max_turns: 90
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+skills:
+  external_dirs: []
